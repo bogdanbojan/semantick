@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  semantick:
+    build: 
+      context: ..
+      dockerfile: ./docker/Dockerfile
