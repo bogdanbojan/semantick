@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: semantick-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: semantick-pod # Base POD name.
+  namespace: semantick-system
+spec:
+  selector:
+    matchLabels:
+      app: semantick # Selector for POD name search.
+  template:
+    metadata:
+      labels:
+        app: semantick
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      terminationGracePeriodSeconds: 60
+    containers:
+      - name: semantick-api
+        image: semantick-amd64:1.0
+
