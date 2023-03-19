@@ -17,3 +17,6 @@
 # Book/Highlights sample tests
 *.epub
 *.txt
+
+# Semantick binary
+semantick
