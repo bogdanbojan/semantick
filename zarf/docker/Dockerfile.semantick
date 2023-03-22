@@ -4,18 +4,18 @@ ENV CGO_ENABLED 0
 ARG BUILD_REF
 
 # Copy the source code in the container.
-COPY . /semantick
+COPY . /service
 
 # Build the service binary.
-WORKDIR /semantick
+WORKDIR /service/app/services/semantick
 RUN go build -ldflags "-X main.build=${BUILD_REF}"
 
 # Run the Go Binary in Alpine.
 FROM alpine:3.14
 ARG BUILD_DATE
 ARG BUILD_REF
-COPY --from=base /semantick /semantick/semantick
-WORKDIR /semantick
+COPY --from=base /service/app/services/semantick/semantick /service/semantick
+WORKDIR /service
 CMD ["./semantick"]
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \

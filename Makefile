@@ -18,7 +18,7 @@ all: semantick
 
 semantick:
 	docker build \
-		-f zarf/docker/Dockerfile \
+		-f zarf/docker/Dockerfile.semantick \
 		-t semantick-amd64:$(VERSION) \
 		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
