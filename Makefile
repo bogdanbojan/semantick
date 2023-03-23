@@ -41,10 +41,11 @@ kind-down:
 	kind delete cluster --name $(KIND_CLUSTER)
 
 kind-load:
+	cd zarf/k8s/kind/semantick-pod; kustomize edit set image semantick-image=semantick-amd64:$(VERSION)
 	kind load docker-image semantick-amd64:$(VERSION) --name $(KIND_CLUSTER)
 
 kind-apply:
-	cat zarf/k8s/base/semantick-pod/base-service.yaml | kubectl apply -f -
+	kustomize build zarf/k8s/kind/semantick-pod | kubectl apply -f -
 
 kind-status:
 	kubectl get nodes -o wide

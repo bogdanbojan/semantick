@@ -21,5 +21,7 @@ spec:
       hostNetwork: true
       terminationGracePeriodSeconds: 60
       containers:
-        - name: semantick-api
-          image: semantick-amd64:1.0
+        - name: semantick
+          image: semantick-image
+
+
