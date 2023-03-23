@@ -34,8 +34,7 @@ kind-up:
 		--image kindest/node:v1.21.1@sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6 \
 		--name $(KIND_CLUSTER) \
 		--config zarf/k8s/kind/kind-config.yaml
-	kubectl config set-context --current 
-
+	kubectl config set-context --current --namespace=semantick-system
 
 kind-down:
 	kind delete cluster --name $(KIND_CLUSTER)
@@ -55,10 +54,8 @@ kind-status:
 kind-logs:
 	kubectl logs -l app=semantick --all-containers=true -f --tail=100  
 
-# TODO: Get rid of the --namespace tag by setting the kubectl config in a 
-# previous step.
 kind-restart:
-	kubectl rollout restart deployment semantick-pod --namespace=semantick-system
+	kubectl rollout restart deployment semantick-pod 
 
 kind-update: all kind-load kind-restart
 
