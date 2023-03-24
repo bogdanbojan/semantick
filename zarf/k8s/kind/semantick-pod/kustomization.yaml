@@ -7,4 +7,4 @@ patchesStrategicMerge:
 images:
 - name: semantick-image
   newName: semantick-amd64
-  newTag: "2.0"
+  newTag: "1.0"
