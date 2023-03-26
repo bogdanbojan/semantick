@@ -7,12 +7,14 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
 	"time"
 
 	"github.com/ardanlabs/conf/v2"
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers"
 	"github.com/bogdanbojan/semantick/foundation/logger"
+	"go.uber.org/automaxprocs/maxprocs"
 	"go.uber.org/zap"
 )
 
@@ -36,6 +38,17 @@ func main() {
 }
 
 func run(log *zap.SugaredLogger) error {
+
+	// =========================================================================
+	// GOMAXPROCS
+
+	// Set the correct number of threads for the service
+	// based on what is available either by the machine or quotas.
+	if _, err := maxprocs.Set(); err != nil {
+		return fmt.Errorf("maxprocs: %w", err)
+	}
+	log.Infow("startup", "GOMAXPROCS", runtime.GOMAXPROCS(0))
+
 	cfg := struct {
 		conf.Version
 		Web struct {
@@ -93,7 +106,7 @@ func run(log *zap.SugaredLogger) error {
 		ErrorLog:     zap.NewStdLog(log.Desugar()),
 	}
 
-    // Make a channel to listen for errors coming from the listener. Use a
+	// Make a channel to listen for errors coming from the listener. Use a
 	// buffered channel so the goroutine can exit if we don't collect this error.
 	serverErrors := make(chan error, 1)
 
@@ -103,7 +116,7 @@ func run(log *zap.SugaredLogger) error {
 		serverErrors <- api.ListenAndServe()
 	}()
 
-    // =========================================================================
+	// =========================================================================
 	// Shutdown
 
 	// Blocking main and waiting for shutdown.
