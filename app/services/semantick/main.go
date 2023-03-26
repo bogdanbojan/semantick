@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"expvar"
 	"fmt"
 	"net/http"
@@ -17,6 +18,10 @@ import (
 	"go.uber.org/automaxprocs/maxprocs"
 	"go.uber.org/zap"
 )
+
+/*
+Need to figure out http service.
+*/
 
 var build = "develop"
 
@@ -59,13 +64,22 @@ func run(log *zap.SugaredLogger) error {
 			IdleTimeout     time.Duration `conf:"default:120s"`
 			ShutdownTimeout time.Duration `conf:"default:20s"`
 		}
-	}{}
-
-	out, err := conf.String(&cfg)
-	if err != nil {
-		return fmt.Errorf("generating config for output: %w", err)
+	}{
+		Version: conf.Version{
+			Build: build,
+			Desc:  "copyright information",
+		},
 	}
-	log.Infow("startup", "config", out)
+
+	const prefix = "SEMANTICK"
+	help, err := conf.Parse(prefix, &cfg)
+	if err != nil {
+		if errors.Is(err, conf.ErrHelpWanted) {
+			fmt.Println(help)
+			return nil
+		}
+		return fmt.Errorf("parsing config: %w", err)
+	}
 
 	expvar.NewString("build").Set(build)
 

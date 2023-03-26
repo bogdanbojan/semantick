@@ -3,7 +3,7 @@ SHELL := /bin/bash
 .PHONY: semantick
 
 run: 
-	./semantick
+	go run app/services/semantick/main.go
 
 build:
 	go build -ldflags "-X main.build=local"
