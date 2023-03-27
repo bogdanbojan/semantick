@@ -2,6 +2,13 @@ SHELL := /bin/bash
 
 .PHONY: semantick
 
+# ==============================================================================
+# Testing running system
+
+# expvarmon -ports=":4000" -vars="build,requests,goroutines,errors,panics,mem:memstats.Alloc"
+
+# ==============================================================================
+
 run: 
 	go run app/services/semantick/main.go | go run app/tooling/logfmt/main.go
 
@@ -11,7 +18,6 @@ build:
 # ==============================================================================
 # Building containers
 
-# $(shell git rev-parse --short HEAD)
 VERSION := 1.0
 
 all: semantick 
