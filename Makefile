@@ -3,7 +3,7 @@ SHELL := /bin/bash
 .PHONY: semantick
 
 run: 
-	go run app/services/semantick/main.go
+	go run app/services/semantick/main.go | go run app/tooling/logfmt/main.go
 
 build:
 	go build -ldflags "-X main.build=local"
@@ -58,6 +58,8 @@ kind-restart:
 	kubectl rollout restart deployment semantick-pod 
 
 kind-update: all kind-load kind-restart
+
+kind-update-apply: all kind-load kind-apply
 
 kind-describe:
 	kubectl describe pod -l app=semantick
