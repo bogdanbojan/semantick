@@ -19,8 +19,10 @@ type Handlers struct {
 // stack it will interpret that as a non-trusted error.
 func (h Handlers) Readiness(w http.ResponseWriter, r *http.Request) {
 	data := struct {
+		Build  string
 		Status string `json:"status"`
 	}{
+		Build:  h.Build,
 		Status: "OK",
 	}
 
@@ -32,6 +34,13 @@ func (h Handlers) Readiness(w http.ResponseWriter, r *http.Request) {
 
 	h.Log.Infow("readiness", "statusCode", statusCode, "method", r.Method, "path", r.URL.Path, "remoteaddr", r.RemoteAddr)
 
+}
+
+// Liveness returns simple status info if the service is alive. If the
+// app is deployed to a Kubernetes cluster, it will also return pod, node, and
+// namespace details via the Downward API. The Kubernetes environment variables
+// need to be set within your Pod/Deployment manifest.
+func (h Handlers) Liveness(w http.ResponseWriter, r *http.Request) {
 }
 
 func response(w http.ResponseWriter, statusCode int, data interface{}) error {
