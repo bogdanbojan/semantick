@@ -57,6 +57,9 @@ kind-status:
 	kubectl get svc -o wide
 	kubectl get pods -o wide --watch --all-namespaces
 
+kind-status-semantick:
+	kubectl get pods -o wide --watch --namespace=semantick-system
+
 kind-logs:
 	kubectl logs -l app=semantick --all-containers=true -f --tail=100  
 
