@@ -3,13 +3,13 @@
 package handlers
 
 import (
-	"encoding/json"
 	"expvar"
 	"net/http"
 	"net/http/pprof"
 	"os"
 
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/debug/checkgrp"
+	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/v1/testgrp"
 	"github.com/dimfeld/httptreemux/v5"
 	"go.uber.org/zap"
 )
@@ -60,17 +60,10 @@ func DebugMux(build string, log *zap.SugaredLogger) http.Handler {
 func APIMux(cfg APIMuxConfig) *httptreemux.ContextMux {
 	mux := httptreemux.NewContextMux()
 
-	h := func(w http.ResponseWriter, r *http.Request) {
-		status := struct {
-			Status string
-		}{
-			Status: "OK",
-		}
-		json.NewEncoder(w).Encode(status)
-
+	tgh := testgrp.Handlers{
+		Log: cfg.Log,
 	}
-
-	mux.Handle(http.MethodGet, "/test", h)
+	mux.Handle(http.MethodGet, "/v1/test", tgh.Test)
 
 	return mux
 }
