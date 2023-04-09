@@ -11,7 +11,6 @@ import (
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/debug/checkgrp"
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/v1/testgrp"
 	"github.com/bogdanbojan/semantick/foundation/web"
-	"github.com/dimfeld/httptreemux/v5"
 	"go.uber.org/zap"
 )
 
@@ -59,12 +58,24 @@ func DebugMux(build string, log *zap.SugaredLogger) http.Handler {
 
 // APIMux constructs an http.Handler with all application routes defined.
 func APIMux(cfg APIMuxConfig) *web.App {
-	app := web.NewApp(cfg.Shutdown)
+    // Construct the web.App which holds all routes as well as common Middleware.
+	app := web.NewApp(
+		cfg.Shutdown,
+	)
+
+    // Load the routes for different versions of the API.
+	v1(app, cfg)
+
+	return app
+}
+
+// v1 binds all the version 1 routes.
+func v1(app *web.App, cfg APIMuxConfig) {
+	const version = "v1"
 
 	tgh := testgrp.Handlers{
 		Log: cfg.Log,
 	}
-	app.Handle(http.MethodGet, "/v1/test", tgh.Test)
 
-	return app
+	app.Handle(http.MethodGet, version, "/test", tgh.Test)
 }
