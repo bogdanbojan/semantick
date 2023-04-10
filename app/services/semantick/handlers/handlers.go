@@ -10,6 +10,7 @@ import (
 
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/debug/checkgrp"
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/v1/testgrp"
+	"github.com/bogdanbojan/semantick/business/web/mid"
 	"github.com/bogdanbojan/semantick/foundation/web"
 	"go.uber.org/zap"
 )
@@ -61,6 +62,7 @@ func APIMux(cfg APIMuxConfig) *web.App {
     // Construct the web.App which holds all routes as well as common Middleware.
 	app := web.NewApp(
 		cfg.Shutdown,
+        mid.Logger(cfg.Log),
 	)
 
     // Load the routes for different versions of the API.
