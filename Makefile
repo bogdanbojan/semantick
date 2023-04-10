@@ -61,7 +61,7 @@ kind-status-semantick:
 	kubectl get pods -o wide --watch --namespace=semantick-system
 
 kind-logs:
-	kubectl logs -l app=semantick --all-containers=true -f --tail=100  
+	kubectl logs -l app=semantick --all-containers=true -f --tail=100  | go run app/tooling/logfmt/main.go
 
 kind-restart:
 	kubectl rollout restart deployment semantick-pod 
