@@ -30,3 +30,15 @@ func NewRequestError(err error, status int) error {
 func (err *RequestError) Error() string {
 	return err.Err.Error()
 }
+
+// Cause iterates through all the wrapped errors until the root
+// error value is reached.
+func Cause(err error) error {
+	root := err
+	for {
+		if err = errors.Unwrap(root); err == nil {
+			return root
+		}
+		root = err
+	}
+}
