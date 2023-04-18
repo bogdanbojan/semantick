@@ -14,6 +14,7 @@ RUN go build -ldflags "-X main.build=${BUILD_REF}"
 FROM alpine:3.14
 ARG BUILD_DATE
 ARG BUILD_REF
+COPY --from=base /service/zarf/keys/. /service/zarf/keys/.
 COPY --from=base /service/app/services/semantick/semantick /service/semantick
 WORKDIR /service
 CMD ["./semantick"]
