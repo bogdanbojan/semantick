@@ -10,6 +10,7 @@ import (
 
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/debug/checkgrp"
 	"github.com/bogdanbojan/semantick/app/services/semantick/handlers/v1/testgrp"
+	"github.com/bogdanbojan/semantick/business/sys/auth"
 	"github.com/bogdanbojan/semantick/business/web/mid"
 	"github.com/bogdanbojan/semantick/foundation/web"
 	"go.uber.org/zap"
@@ -19,6 +20,7 @@ import (
 type APIMuxConfig struct {
 	Shutdown chan os.Signal
 	Log      *zap.SugaredLogger
+	Auth     *auth.Auth
 }
 
 // DebugStandardLibraryMux registers all the debug routes from the standard library
@@ -59,16 +61,16 @@ func DebugMux(build string, log *zap.SugaredLogger) http.Handler {
 
 // APIMux constructs an http.Handler with all application routes defined.
 func APIMux(cfg APIMuxConfig) *web.App {
-    // Construct the web.App which holds all routes as well as common Middleware.
+	// Construct the web.App which holds all routes as well as common Middleware.
 	app := web.NewApp(
 		cfg.Shutdown,
-        mid.Logger(cfg.Log),
-        mid.Errors(cfg.Log),
-        mid.Metrics(),
-        mid.Panics(),
+		mid.Logger(cfg.Log),
+		mid.Errors(cfg.Log),
+		mid.Metrics(),
+		mid.Panics(),
 	)
 
-    // Load the routes for different versions of the API.
+	// Load the routes for different versions of the API.
 	v1(app, cfg)
 
 	return app
@@ -83,4 +85,5 @@ func v1(app *web.App, cfg APIMuxConfig) {
 	}
 
 	app.Handle(http.MethodGet, version, "/test", tgh.Test)
+	app.Handle(http.MethodGet, version, "/testauth", tgh.Test, mid.Authenticate(cfg.Auth), mid.Authorize(auth.RoleAdmin))
 }
