@@ -1,4 +1,4 @@
-// Package checkgrp maintains the group of handlers for health checking.
+// Package testgrp maintains the group of test handlers.
 package testgrp
 
 import (
