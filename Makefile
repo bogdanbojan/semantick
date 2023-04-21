@@ -86,6 +86,13 @@ kind-describe:
 
 
 # ==============================================================================
+# Running tests within the local computer
+
+test:
+	go test ./... -count=1
+	staticcheck -checks=all ./...
+
+# ==============================================================================
 # Modules support
 
 deps-reset:
