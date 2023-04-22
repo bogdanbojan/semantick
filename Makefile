@@ -61,6 +61,8 @@ kind-load:
 	kind load docker-image semantick-amd64:$(VERSION) --name $(KIND_CLUSTER)
 
 kind-apply:
+	kustomize build zarf/k8s/kind/database-pod | kubectl apply -f -
+	kubectl wait --namespace=database-system --timeout=120s --for=condition=Available deployment/database-pod
 	kustomize build zarf/k8s/kind/semantick-pod | kubectl apply -f -
 
 kind-status:
