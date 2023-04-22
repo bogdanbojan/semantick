@@ -71,6 +71,9 @@ kind-status:
 kind-status-semantick:
 	kubectl get pods -o wide --watch --namespace=semantick-system
 
+kind-status-db:
+	kubectl get pods -o wide --watch --namespace=database-system
+
 kind-logs:
 	kubectl logs -l app=semantick --all-containers=true -f --tail=100  | go run app/tooling/logfmt/main.go
 
