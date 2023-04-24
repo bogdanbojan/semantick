@@ -71,7 +71,7 @@ func run(log *zap.SugaredLogger) error {
 			KeysFolder string `conf:"default:zarf/keys/"`
 			ActiveKID  string `conf:"default:54bb2165-71e1-41a6-af3e-7da4a0e1e2c1"`
 		}
-        DB struct {
+		DB struct {
 			User         string `conf:"default:postgres"`
 			Password     string `conf:"default:postgres,mask"`
 			Host         string `conf:"default:localhost"`
@@ -128,7 +128,7 @@ func run(log *zap.SugaredLogger) error {
 		return fmt.Errorf("constructing auth: %w", err)
 	}
 
-    // =========================================================================
+	// =========================================================================
 	// Database Support
 
 	// Create connectivity to the database.
@@ -160,7 +160,7 @@ func run(log *zap.SugaredLogger) error {
 	// related endpoints. This include the standard library endpoints.
 
 	// Construct the mux for the debug calls.
-	debugMux := handlers.DebugMux(build, log)
+	debugMux := handlers.DebugMux(build, log, db)
 
 	// Start the service listening for debug requests.
 	// Not concerned with shutting this down with load shedding.
@@ -183,6 +183,7 @@ func run(log *zap.SugaredLogger) error {
 		Shutdown: shutdown,
 		Log:      log,
 		Auth:     auth,
+		DB:       db,
 	})
 
 	// Construct a server to service the requests against the mux.
