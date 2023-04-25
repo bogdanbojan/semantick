@@ -3,6 +3,7 @@ module github.com/bogdanbojan/semantick
 go 1.19
 
 require (
+	github.com/ardanlabs/conf v1.5.0
 	github.com/ardanlabs/conf/v2 v2.2.0
 	github.com/ardanlabs/service v0.0.0-20230412175053-27ccb32fe858
 	github.com/dimfeld/httptreemux/v5 v5.5.0
@@ -16,6 +17,7 @@ require (
 )
 
 require (
+	github.com/ardanlabs/darwin v1.5.0
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
