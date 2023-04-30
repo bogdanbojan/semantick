@@ -3,17 +3,27 @@ module github.com/bogdanbojan/semantick
 go 1.19
 
 require (
-	github.com/ardanlabs/conf v1.5.0
 	github.com/ardanlabs/conf/v2 v2.2.0
 	github.com/ardanlabs/service v0.0.0-20230412175053-27ccb32fe858
 	github.com/dimfeld/httptreemux/v5 v5.5.0
+	github.com/go-playground/locales v0.14.1
+	github.com/go-playground/universal-translator v0.18.1
+	github.com/go-playground/validator/v10 v10.12.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.8
 	go.opentelemetry.io/otel v1.14.0
 	go.uber.org/automaxprocs v1.5.2
 	go.uber.org/zap v1.24.0
+	golang.org/x/crypto v0.8.0
+)
+
+require (
+	github.com/leodido/go-urn v1.2.3 // indirect
+	golang.org/x/sys v0.7.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 )
 
 require (
